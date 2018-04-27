@@ -19,7 +19,7 @@ get_F30 <- function(D,NumCores){
     counter <- 0
     while(!(SPR>=0.29&SPR<=0.31)){ # This loop searches for F30
 
-      SPR <- GetSPR(L,anF,anLc=NA)
+      SPR <- get_SPR(L,anF,anLc=NA)
 
       if(D$Fmort<0){anF=-9999;break}
 

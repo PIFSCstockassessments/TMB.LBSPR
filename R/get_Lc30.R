@@ -18,7 +18,7 @@ get_Lc30 <- function(D,NumCores){
     Llambda <- D$Linf*(1-exp(-D$K*D$Amax)) # Calculate Llambda
     while(!(SPR>=0.28&SPR<=0.32)){ # This loop searches for F30
 
-      SPR <- GetSPR(D,aFmort=NA,anLc=anLc)
+      SPR <- get_SPR(D,aFmort=NA,anLc=anLc)
 
       if(D$Fmort<0){anLc=-9999;break}
 
