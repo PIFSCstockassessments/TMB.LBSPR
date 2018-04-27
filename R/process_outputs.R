@@ -1,14 +1,23 @@
-Process.Results <- function(D, TYPE, SHOW.LC){
-  
-  require(reshape2); require(data.table); require(ggplot2); require(scales); require(gridExtra); require(grid); require(MASS); require(Hmisc)
+#' @import ggplot2
+#' @import reshape2
+#' @import data.table
+#' @import scales
+#' @import gridExtra
+#' @import grid
+#' @import MASS
+#' @import Hmisc
+#'
+#' @export
+
+process_outputs <- function(D, TYPE, SHOW.LC){
+
   options(na.rm=TRUE)
- 
   D <- data.frame(D)
 
   #TYPE<-"Both"   # COMMENT OUT, JUST FOR TESTING
   #SHOW.LC<-T     # SAME
   #D <- Final     # SAME
-  
+
 #=====================FILTERS=============================================
 D <- D[D$Bio.survey>0,]
 D <- D[D$Linf>0,]
@@ -24,7 +33,7 @@ D[D$Lc30==-9999,]$Lc30 <- NA
 D <- data.frame(D)
 
 # Calculate selectiviy medians
-MEDIAN  <- prettyNum(signif(sapply(D[,14:15],median,na.rm=T),3))  
+MEDIAN  <- prettyNum(signif(sapply(D[,14:15],median,na.rm=T),3))
 SD      <- prettyNum(signif(sapply(D[,14:15],sd,na.rm=T),3))
 Summary.select <- cbind(MEDIAN,SD)
 
@@ -56,13 +65,13 @@ Titles <- list(expression(paste(italic("L")["inf"]~(mm))),
                expression(paste(italic("F")/italic("F")["30"]))
 )
 
-create.expr <- function(num, unit ){ 
-  
+create.expr <- function(num, unit ){
+
   if(unit!="")
     text <- paste("expression(",'"', num,'"', "~", unit, ")", sep="")
   else
-    text <- paste("expression(",'"', num,'"',")", sep="") 
-  express <- eval(parse(text=text))  
+    text <- paste("expression(",'"', num,'"',")", sep="")
+  express <- eval(parse(text=text))
   return (express)
 }
 
@@ -73,22 +82,22 @@ for (i in 1:ncol(temp)){ # Find min/max of each columns
 }
 
 if(TYPE=="Both"){
-  Min[10] <- Min[12]  <- min(temp[,10],temp[,12]) 
+  Min[10] <- Min[12]  <- min(temp[,10],temp[,12])
   Max[10] <- Max[12]  <- max(mean(temp[,10])+sd(temp[,10]), mean(temp[,12])+sd(temp[,12])*6)
   Min[11] <- Min[13]  <- min(temp[,11],temp[,13])
   Max[11] <- Max[13]  <- max(mean(temp[,11])+sd(temp[,11]),mean(temp[,13])+sd(temp[,13])*6)
-  
+
 } else if(TYPE=="Survey only"){
   Min[12]<- min(temp[,12])
   Max[12]<- mean(temp[,12])+sd(temp[,12])*6
-  
+
   Min[13]<- min(temp[,13])
   Max[13]<- mean(temp[,13])+sd(temp[,13])*6
-  
+
 } else if(TYPE=="Catch only"){
   Min[10]<- min(temp[,10])
   Max[10]<- mean(temp[,10])+sd(temp[,10])*2
-  
+
   Min[11]<- min(temp[,11])
   Max[11]<- mean(temp[,11])+sd(temp[,11])*2
 }
@@ -109,26 +118,26 @@ theme <- theme(axis.line=element_line(colour="black"),
 #=====================CREATE GRAPHS========================================
 glist <- vector(mode="list",length=17)
 for(i in 1:16){
-  
+
   if(SHOW.LC==F&i==8){next}
-  
-  bw       <- diff(range(D[,i],na.rm=T)) / (  diff(range(D[,i],na.rm=T)) / (2 * IQR(D[,i],na.rm=T) / length(D[,i])^(1/3))   )   
+
+  bw       <- diff(range(D[,i],na.rm=T)) / (  diff(range(D[,i],na.rm=T)) / (2 * IQR(D[,i],na.rm=T) / length(D[,i])^(1/3))   )
   maxCount <- max(hist(D[,i],breaks=seq(min(D[,i],na.rm=T),max(D[,i],na.rm=T)+bw,by=bw),plot=F)$counts)
   max.X    <- max(hist(D[,i],breaks=seq(min(D[,i],na.rm=T),max(D[,i],na.rm=T)+bw,by=bw),plot=F)$breaks)
   min.X    <- min(hist(D[,i],breaks=seq(min(D[,i],na.rm=T),max(D[,i],na.rm=T)+bw,by=bw),plot=F)$breaks)
   range.X  <- max.X - min.X
   TwenPerc <- 0.25*range.X
-  
+
   aMedian  <- median(D[,i],na.rm=T)
   MedianLabel<-""
-  
+
   Median.pos <- aMedian+bw*6
   if(i==8){Median.pos <- aMedian-TwenPerc}
-  
-  if(i>=9&i<=13){MedianLabel<- prettyNum(signif(aMedian*1000,3),big.mark=",")}else{MedianLabel<- prettyNum(signif(aMedian,2),big.mark=",") } 
-  
+
+  if(i>=9&i<=13){MedianLabel<- prettyNum(signif(aMedian*1000,3),big.mark=",")}else{MedianLabel<- prettyNum(signif(aMedian,2),big.mark=",") }
+
   anExpr <- create.expr(MedianLabel,Units[i])
-  
+
   variable <- colnames(D)[i]
   aGraph <- ggplot(data=D,aes_string(x=variable))+geom_histogram(binwidth=bw,col="cadetblue3",fill="cadetblue3",lwd=0.2)+
     scale_x_continuous(name=Titles[[i]],labels=comma)+
@@ -137,13 +146,13 @@ for(i in 1:16){
     geom_vline(xintercept=aMedian,col="red",linetype="dashed",size=1)+
     annotate("text",hjust=0,x=Median.pos,y=maxCount*0.8,label=as.character(anExpr),size=2.5,parse=T)+
     theme_bw()+theme
-  
-  
+
+
   if(i==15){
     aGraph <- aGraph + annotate("segment",x=0.3,xend=0.3,y=0,yend=maxCount/20,col="black",size=1)
   }
-  
-  glist[[i]] <- aGraph 
+
+  glist[[i]] <- aGraph
 
 }
 
@@ -151,10 +160,10 @@ for(i in 1:16){
 LH.page     <- arrangeGrob(ncol=2, glist[[1]],glist[[2]],glist[[3]],glist[[4]],glist[[6]],glist[[5]])
 
 if(SHOW.LC)
-  Status.page <- arrangeGrob(ncol=2, glist[[14]],glist[[7]],glist[[16]],glist[[8]],glist[[15]])  
+  Status.page <- arrangeGrob(ncol=2, glist[[14]],glist[[7]],glist[[16]],glist[[8]],glist[[15]])
 
 if(!SHOW.LC)
-  Status.page <- arrangeGrob(ncol=2, glist[[14]],glist[[7]],glist[[16]],glist[[15]])  
+  Status.page <- arrangeGrob(ncol=2, glist[[14]],glist[[7]],glist[[16]],glist[[15]])
 
 if(TYPE=="Both")
   #C30.page    <- arrangeGrob(ncol=2, glist[[9]],glist[[11]],glist[[10]],glist[[13]],glist[[12]])
@@ -186,8 +195,8 @@ if(TYPE=="Both"){
     geom_line(aes(x=cumul$C30.survey),col="blue",size=0.8,linetype="dotted")+
     annotate("segment",x=median(D$C30.catch),xend=median(D$C30.catch),y=0,yend=0.05,col="orange",size=1)+
     annotate("segment",x=median(D$C30.survey),xend=median(D$C30.survey),y=0,yend=0.05,col="blue",size=1)
-    
-  
+
+
 } else if(TYPE=="Catch only") {
   C30.cdf.graph <- C30.cdf.graph+geom_line(aes(x=cumul$C30.catch),col="orange",size=0.8,linetype="longdash")+
     annotate("segment",x=median(D$C30.catch),xend=median(D$C30.catch),y=0,yend=0.05,col="orange",size=1)
@@ -206,31 +215,31 @@ C30.cdf.graph<- C30.cdf.graph+scale_x_continuous(name=expression(paste(italic("C
 if(TYPE=="Both"){height=16}else if(TYPE=="Catch only"){height=11}else if(TYPE=="Survey only"){height=5.5}
 
 tiff(filename="1_OUTPUTS/1_LH_page.tiff", type="cairo", units="cm", compression = "lzw",
-     width=14, 
-     height=17, 
+     width=14,
+     height=17,
      res=400)
 grid.draw(LH.page)
 dev.off()
 
 if(SHOW.LC){height=14}else if(!SHOW.LC){height=9.33}
 tiff(filename="1_OUTPUTS/2_Status_page.tiff", type="cairo",units="cm", compression = "lzw",
-     width=12.5, 
-     height=height, 
+     width=12.5,
+     height=height,
      res=400)
 grid.draw(Status.page)
 dev.off()
 
 if(TYPE=="Both"){height=17}else if(TYPE=="Catch only"){height=11.33}else if(TYPE=="Survey only"){height=5.666}
 tiff(filename="1_OUTPUTS/3_C30_page.tiff", type="cairo",units="cm", compression = "lzw",
-     width=14, 
-     height=height, 
+     width=14,
+     height=height,
      res=400)
 grid.draw(C30.page)
 dev.off()
 
 tiff(filename="1_OUTPUTS/4_C30_cdf.tiff", type="cairo",units="cm", compression = "lzw",
-     width=14, 
-     height=6, 
+     width=14,
+     height=6,
      res=400)
 print(C30.cdf.graph)
 dev.off()
@@ -309,7 +318,7 @@ saveWorkbook(wb,"1_OUTPUTS/MANAGEMENT.xlsx",overwrite=T)
 #write.csv(LC30.table,file="1_OUTPUTS/LC30 table.csv")
 
 #=====SUMMARY TABLE FOR REPORT===========================
-MEDIAN  <- prettyNum(signif(sapply(D,median,na.rm=T),3))  
+MEDIAN  <- prettyNum(signif(sapply(D,median,na.rm=T),3))
 SD      <- prettyNum(signif(sapply(D,sd,na.rm=T),3))
 Summary <- cbind(MEDIAN,SD)
 
