@@ -1,6 +1,6 @@
 #' @import ggplot2
 
-model_fit <- function(Results){  # Residual graphs an preliminary results
+model_fit <- function(Results,outdir){  # Residual graphs an preliminary results
 
   Final <- Results[[1]]
 
@@ -75,9 +75,13 @@ model_fit <- function(Results){  # Residual graphs an preliminary results
   print(median(Final$Bio.catch))
   print(median(Final$Bio.survey))
 
-  mypath <- paste("1_OUTPUTS/","FIT",".tiff",sep="")
+
+  filename <- paste0("FIT",".tiff")
+  mypath <- file.path(outdir,filename)
   ggsave(mypath,plot=fit.plot,units="cm",height=5.5,width=8.5,pointsize=5, dpi=300, compression="lzw")
-  mypath <- paste("1_OUTPUTS/","RES",".tiff",sep="")
+
+  filename <- paste0("RES",".tiff")
+  mypath <- file.path(outdir,filename)
   ggsave(mypath,plot=res.plot,units="cm",height=5.5,width=8.5,pointsize=5, dpi=300, compression="lzw")
 
   print(fit.plot)

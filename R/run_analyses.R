@@ -33,8 +33,23 @@ run_analyses <- function(D, Species, n_iteration,n_GTG,starting,ManageF30, Manag
     Final <- cbind(Final,Lc30)
   }
 
+
+  # Figure out proper save path
+  project_home <- file.path(home=Sys.getenv("HOME"), "TMB.LBSPR")
+  if(!dir.exists(project_home)){
+    message("Creating directory for TMB.LBSPR runs: ", project_home ," ...")
+    dir.create(project_home)
+  }
+
+  outdir <- file.path(project_home,paste0("LBSPR_",Species))
+  dir.create(outdir)
+
   Results[[1]] <- Final
-  model_fit(Results)
+  model_fit(Results, outdir)
+
+  if(D$Val1[11]!=9999){
+    process_outputs(Results[[1]],"Both",SHOW.LC=TRUE,outdir)
+  }else{process_outputs(Results[[1]],"Catch only",SHOW.LC=F,outdir)}
 
   return(Results)
 

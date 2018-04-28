@@ -6,10 +6,7 @@
 #' @import grid
 #' @import MASS
 #' @import Hmisc
-#'
-#' @export
-
-process_outputs <- function(D, TYPE, SHOW.LC){
+process_outputs <- function(D, TYPE, SHOW.LC,outdir){
 
   options(na.rm=TRUE)
   D <- data.frame(D)
@@ -209,12 +206,12 @@ C30.cdf.graph<- C30.cdf.graph+scale_x_continuous(name=expression(paste(italic("C
   scale_y_continuous(name="Overfishing prob.",expand=c(0,0),limits=c(0,.95))+
   theme_bw()+theme
 
-#print(C30.cdf.graph)
 
 #===============================SAVE GRAPHS TO FILE=====================================
 if(TYPE=="Both"){height=16}else if(TYPE=="Catch only"){height=11}else if(TYPE=="Survey only"){height=5.5}
 
-tiff(filename="1_OUTPUTS/1_LH_page.tiff", type="cairo", units="cm", compression = "lzw",
+filename <- file.path(outdir,"1_LH_page.tiff")
+tiff(filename=filename, type="cairo", units="cm", compression = "lzw",
      width=14,
      height=17,
      res=400)
@@ -222,7 +219,8 @@ grid.draw(LH.page)
 dev.off()
 
 if(SHOW.LC){height=14}else if(!SHOW.LC){height=9.33}
-tiff(filename="1_OUTPUTS/2_Status_page.tiff", type="cairo",units="cm", compression = "lzw",
+filename <- file.path(outdir,"2_Status_page.tiff")
+tiff(filename=filename, type="cairo",units="cm", compression = "lzw",
      width=12.5,
      height=height,
      res=400)
@@ -230,14 +228,16 @@ grid.draw(Status.page)
 dev.off()
 
 if(TYPE=="Both"){height=17}else if(TYPE=="Catch only"){height=11.33}else if(TYPE=="Survey only"){height=5.666}
-tiff(filename="1_OUTPUTS/3_C30_page.tiff", type="cairo",units="cm", compression = "lzw",
+filename <- file.path(outdir,"3_C30_page.tiff")
+tiff(filename=filename, type="cairo",units="cm", compression = "lzw",
      width=14,
      height=height,
      res=400)
 grid.draw(C30.page)
 dev.off()
 
-tiff(filename="1_OUTPUTS/4_C30_cdf.tiff", type="cairo",units="cm", compression = "lzw",
+filename <- file.path(outdir,"4_C30_cdf.tiff")
+tiff(filename=filename, type="cairo",units="cm", compression = "lzw",
      width=14,
      height=6,
      res=400)
@@ -281,10 +281,6 @@ writeData(wb,sheet="C30",C30.table3)
 style <- createStyle(halign="center",fontName="Times New Roman")
 addStyle(wb,sheet="C30",style,cols=c(1:6),rows=1:50,gridExpand=T)
 
-#write.xlsx(C30.table3,file="1_OUTPUTS/C30 table.xlsx",na="",row.names=F)
-
-#write.csv(C30.table,file="1_OUTPUTS/C30 table.csv")
-
 #===GENERATE A PROBABILITY OF OVERFISHING TABLE FOR VARIOUS LC=====
 LC30.table <- NULL
 LC30.table$prob <- seq(0.5,0.95,by=0.01)
@@ -312,10 +308,9 @@ addWorksheet(wb,"LC30")
 writeData(wb,sheet="LC30",LC30.table3)
 addStyle(wb,sheet="LC30",style,cols=c(1:6),rows=1:50,gridExpand=T)
 
-saveWorkbook(wb,"1_OUTPUTS/MANAGEMENT.xlsx",overwrite=T)
+filename <- file.path(outdir,"MANAGEMENT.xlsx")
+saveWorkbook(wb,filename,overwrite=T)
 
-
-#write.csv(LC30.table,file="1_OUTPUTS/LC30 table.csv")
 
 #=====SUMMARY TABLE FOR REPORT===========================
 MEDIAN  <- prettyNum(signif(sapply(D,median,na.rm=T),3))
@@ -328,7 +323,8 @@ num_iter <- round(nrow(D[D$SPR<0.3,])/nrow(D),3)
 
 Summary <- rbind(Summary,num_iter,Summary.select)
 
-write.csv(Summary,file="1_OUTPUTS/Summary.csv")
+filename <- file.path(outdir,"Summary.csv")
+write.csv(Summary,file=filename)
 
 #======================CALCULATE THE PERCENT SPR ITERATIONS BELOW 30%==================
 
