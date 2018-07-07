@@ -23,9 +23,9 @@ D <- D[D$Fmort>0.005,]
 
 #if(TYPE!="Survey only"){D <- D[C30_Catch>0]}
 #if(TYPE!="Catch only") {D <- D[C30_Survey>0]}
-#D[Lc30==0|Lc30==-9999]$Lc30 <- NA
+D[D$Lc30<=10|D$Lc30==-9999,]$Lc30 <- NA
 #D <- data.frame(D); D <- data.table(D)
-D[D$Lc30==-9999,]$Lc30 <- NA
+#D[D$Lc30==-9999,]$Lc30 <- NA
 #D <- data.frame(D)
 D <- data.frame(D)
 
@@ -126,6 +126,12 @@ for(i in 1:16){
   TwenPerc <- 0.25*range.X
 
   aMedian  <- median(D[,i],na.rm=T)
+  if(i==8){ # This section is to include NAs when calculating the Lc30 median
+    D8             <- D[,8]
+    D8[is.na(D8)]  <- 0
+    aMedian        <- median(D8)
+   }
+
   MedianLabel<-""
 
   Median.pos <- aMedian+bw*6
@@ -286,21 +292,24 @@ LC30.table <- NULL
 LC30.table$prob <- seq(0.5,0.95,by=0.01)
 LC30.table <- data.frame(LC30.table)
 
+D_Lc30                <- D$Lc30
+D_Lc30[is.na(D_Lc30)] <- 0
+
 LC30 <- NULL
-LC30 <- quantile(D$Lc30,probs=seq(0.5,0.95,by=0.01),na.rm=T)
+LC30 <- quantile(D_Lc30,probs=seq(0.5,0.95,by=0.01),na.rm=T)
 
 LC30.table$LC30 <- round(LC30,0)
 LC30.table$prob <- 1-LC30.table$prob
-LC30.table <- LC30.table[order(LC30.table$prob),]
+LC30.table      <- LC30.table[order(LC30.table$prob),]
 
-LC30.table  <- data.frame(LC30.table)
-LC30.table1 <- LC30.table[LC30.table$prob<0.28,]
+LC30.table       <- data.frame(LC30.table)
+LC30.table1      <- LC30.table[LC30.table$prob<0.28,]
 LC30.table1$prob <- format(LC30.table1$prob,digits=2)
-LC30.table2 <- LC30.table[LC30.table$prob>=0.28,]
+LC30.table2      <- LC30.table[LC30.table$prob>=0.28,]
 LC30.table2$prob <- format(LC30.table2$prob,digits=2)
-LC30.table3 <- cbind(LC30.table1,LC30.table2)
+LC30.table3      <- cbind(LC30.table1,LC30.table2)
 
-LC30.table3 <- format(LC30.table3,digits=0)
+LC30.table3      <- format(LC30.table3,digits=0)
 LC30.table3$prob <- format(LC30.table3$prob,digits=2)
 
 
