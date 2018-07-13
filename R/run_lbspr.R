@@ -39,8 +39,8 @@ run_lbspr <- function(D, Species, n_iteration,n_GTG,starting,NumCores){
     ParDist$K      <- -9999
     ParDist$Lmax   <- -9999
 
-    ParDist$Linf   <- GenerateRandom(n_iter_extra,D[2,]$Dist,D[2,]$Val1,D[2,]$Val2)
-    ParDist$K      <- GenerateRandom(n_iter_extra,D[4,]$Dist,D[4,]$Val1,D[4,]$Val2)
+    ParDist$Linf   <- StepwiseLH::GenerateRandom(n_iter_extra,D[2,]$Dist,D[2,]$Val1,D[2,]$Val2)
+    ParDist$K      <- StepwiseLH::GenerateRandom(n_iter_extra,D[4,]$Dist,D[4,]$Val1,D[4,]$Val2)
 
     #cov        <- D[2,]$Val2*D[4,]$Val2*-0.66 # Inserting a -0.66 correlation coefficient between Linf and K
 
@@ -57,26 +57,26 @@ run_lbspr <- function(D, Species, n_iteration,n_GTG,starting,NumCores){
     ParDist$A0     <- D[5,]$Val1
 
     if(!is.na(D[8,]$Val1)){
-      ParDist$M    <- GenerateRandom(n_iter_extra,D[8,]$Dist,D[8,]$Val1,D[8,]$Val2)
+      ParDist$M    <- StepwiseLH::GenerateRandom(n_iter_extra,D[8,]$Dist,D[8,]$Val1,D[8,]$Val2)
       ParDist$Amax <- -log(0.04)/ParDist$M
     }
 
     if(is.na(D[8,]$Val1)){
-      ParDist$Amax <- GenerateRandom(n_iter_extra,D[9,]$Dist,D[9,]$Val1,D[9,]$Val2)
+      ParDist$Amax <- StepwiseLH::GenerateRandom(n_iter_extra,D[9,]$Dist,D[9,]$Val1,D[9,]$Val2)
       ParDist$M    <- -log(0.04)/ParDist$Amax
     }
 
 
     LmatDistance   <- D[7,]$Val1-D[6,]$Val1
-    ParDist$Lmat50 <- GenerateRandom(n_iter_extra,D[6,]$Dist,D[6,]$Val1,D[6,]$Val2)
+    ParDist$Lmat50 <- StepwiseLH::GenerateRandom(n_iter_extra,D[6,]$Dist,D[6,]$Val1,D[6,]$Val2)
     ParDist$Lmat95 <- ParDist$Lmat50+LmatDistance
     ParDist$Amat   <- ParDist$A0-1/ParDist$K*log(1-ParDist$Lmat50/ParDist$Linf)
   }
 
-  ParDist$CVLinf     <- GenerateRandom(n_iter_extra,D[3,]$Dist,D[3,]$Val1,D[3,]$Val2)
+  ParDist$CVLinf     <- StepwiseLH::GenerateRandom(n_iter_extra,D[3,]$Dist,D[3,]$Val1,D[3,]$Val2)
   ParDist$beta       <- beta
-  ParDist$Bio.survey <- GenerateRandom(n_iter_extra,D[11,]$Dist,D[11,]$Val1,D[11,]$Val2)
-  ParDist$Catch      <- GenerateRandom(n_iter_extra,D[12,]$Dist,D[12,]$Val1,D[12,]$Val2)
+  ParDist$Bio.survey <- StepwiseLH::GenerateRandom(n_iter_extra,D[11,]$Dist,D[11,]$Val1,D[11,]$Val2)
+  ParDist$Catch      <- StepwiseLH::GenerateRandom(n_iter_extra,D[12,]$Dist,D[12,]$Val1,D[12,]$Val2)
 
   # Remove problematic iterations and re-sample to get iteration count = n_iteration
   FilteredParDist <- subset(ParDist,
@@ -162,7 +162,7 @@ run_lbspr <- function(D, Species, n_iteration,n_GTG,starting,NumCores){
 
     # Run TMB model
     tryCatch({
-      model <- MakeADFun(data, parameters, DLL="TMB.LBSPR")
+      model <- MakeADFun(data, parameters, DLL="TMB_LBSPR")
       fit   <- nlminb(model$par, model$fn, model$gr)
     }, error = function(e) return ("Error!"))
 
@@ -175,7 +175,7 @@ run_lbspr <- function(D, Species, n_iteration,n_GTG,starting,NumCores){
   cl <- makeCluster(NumCores)
   clusterEvalQ(cl,require(TMB))
   #clusterEvalQ(cl,dyn.load(dynlib("GTG")))
-  clusterEvalQ(cl,dyn.load(dynlib("src//TMB.LBSPR")))
+  clusterEvalQ(cl,dyn.load(dynlib("src/TMB_LBSPR")))
 
 
   start<-proc.time()[3]
