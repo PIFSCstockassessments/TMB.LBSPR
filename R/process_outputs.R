@@ -132,6 +132,8 @@ for(i in 1:16){
     aMedian        <- median(D8)
    }
 
+  if(i==15) { bw <- 0.02   }
+
   MedianLabel<-""
 
   Median.pos <- aMedian+bw*6
