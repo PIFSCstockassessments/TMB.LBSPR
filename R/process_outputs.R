@@ -23,7 +23,7 @@ D <- D[D$Fmort>0.005,]
 
 #if(TYPE!="Survey only"){D <- D[C30_Catch>0]}
 #if(TYPE!="Catch only") {D <- D[C30_Survey>0]}
-D[D$Lc30<=10|D$Lc30==-9999,]$Lc30 <- NA
+D[D$Lc30<=50|D$Lc30==-9999,]$Lc30 <- NA
 #D <- data.frame(D); D <- data.table(D)
 #D[D$Lc30==-9999,]$Lc30 <- NA
 #D <- data.frame(D)
@@ -132,7 +132,13 @@ for(i in 1:16){
     aMedian        <- median(D8)
    }
 
-  if(i==15) { bw <- 0.02   }
+  if(i==15) {
+    bw <- 0.02
+    maxCount <- max(hist(D[,i],breaks=seq(min(D[,i],na.rm=T),max(D[,i],na.rm=T)+bw,by=bw),plot=F)$counts)
+    max.X    <- max(hist(D[,i],breaks=seq(min(D[,i],na.rm=T),max(D[,i],na.rm=T)+bw,by=bw),plot=F)$breaks)
+    min.X    <- min(hist(D[,i],breaks=seq(min(D[,i],na.rm=T),max(D[,i],na.rm=T)+bw,by=bw),plot=F)$breaks)
+    range.X  <- max.X - min.X
+    }
 
   MedianLabel<-""
 
