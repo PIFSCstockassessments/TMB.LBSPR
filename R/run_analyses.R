@@ -49,7 +49,7 @@ run_analyses <- function(D, Species, n_iteration,n_GTG,starting,ManageF30, Manag
 
   if(D$Val1[11]!=9999){
     process_outputs(Results[[1]],"Both",SHOW.LC=TRUE,outdir)
-  }else{process_outputs(Results[[1]],"Catch only",SHOW.LC=F,outdir)}
+  }else{process_outputs(Results[[1]],"Catch only",SHOW.LC=TRUE,outdir)}
 
   return(Results)
 
