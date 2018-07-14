@@ -330,6 +330,7 @@ saveWorkbook(wb,filename,overwrite=T)
 
 
 #=====SUMMARY TABLE FOR REPORT===========================
+D[is.na(D$Lc30),]$Lc30 <- 0
 MEDIAN  <- prettyNum(signif(sapply(D,median,na.rm=T),3))
 SD      <- prettyNum(signif(sapply(D,sd,na.rm=T),3))
 Summary <- cbind(MEDIAN,SD)
