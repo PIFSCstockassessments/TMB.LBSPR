@@ -8,11 +8,9 @@ get_F30 <- function(D,NumCores){
   D <- data.table(D)
   L <- split(D, seq(nrow(D)))
 
-  #D <- L[[69]]  # FOR TESTING ONLY, COMMENT OUT
+ # D <- L[[2]]  # FOR TESTING ONLY, COMMENT OUT
 
   FindF30 <- function(L){ # Function returns a F30 for a single line of data
-
-    #L <- D # TESTING ONLY, COMMENT OUT.
 
     anF    <- (L$SPR/0.3)*L$Fmort  # Starting guess for F30
     SPR <- 0
@@ -21,10 +19,10 @@ get_F30 <- function(D,NumCores){
 
       SPR <- get_SPR(L,anF,anLc=NA)
 
-      if(D$Fmort<0){anF=-9999;break}
+      if(L$Fmort<0){anF=-9999;break}
 
-      #print(c(round(counter,0),round(SPR,2),round(anF,5)))
-      if(anF>=6 | counter>20 | anF<0){anF=-9999; break} # This break is to insure no infinite loop
+      #print(c(round(counter,0),round(SPR,2),round(anF,5))) # COMMENT OUT - FOR TESTING
+      if(anF>=6 | counter>25 | anF<0){anF=-9999; break} # This break is to insure no infinite loop
 
       if(SPR<0.24)            {anF=anF*0.90}
       if(SPR>=0.24&SPR<0.29)  {anF=anF*0.98}
@@ -33,9 +31,6 @@ get_F30 <- function(D,NumCores){
       if(SPR>=0.36&SPR<0.6)   {anF=anF*1.10}
       if(SPR>=0.6&SPR<0.7)    {anF=anF*1.50}
       if(SPR>=0.7)            {anF=anF*2.00}
-
-      #if(abs(SPR-0.3)>0.15){ F_increment=anF*0.35}else if(abs(SPR-0.3)>0.15){F_increment=anF*0.2}else{F_increment=anF*0.1}
-      #if(SPR>0.31){ anF = anF+F_increment}else if(SPR<0.29){anF=anF-F_increment}
       counter<-counter+1
 
     }
@@ -50,6 +45,7 @@ get_F30 <- function(D,NumCores){
   start<-proc.time()[3]
   clusterEvalQ(cl,require(TMB.LBSPR))
   Out <- parLapply(cl,L,FindF30)
+  #Out <- sapply(L,FindF30) #COMMENT OUT - TESTING
   print((proc.time()[3]-start)/60)
   stopCluster(cl)
   #beep(sound=3);
