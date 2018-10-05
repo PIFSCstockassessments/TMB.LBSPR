@@ -21,7 +21,8 @@ get_Lc30 <- function(D,NumCores){
       if(L$Fmort<0){anLc=-9999;break}
 
       #print(c(round(counter,0),round(SPR,2),round(anLc,5))) # COMMENT OUT
-      if(counter>25){anLc=-9999; break} # This break is to insure no infinite loop
+      #if(counter>25){anLc=-9999; break} # This break is to insure no infinite loop
+      if(counter>25){anLc=0; break} # This break is to insure no infinite loop
       if(anLc<=0){anLc=0;break;}
 
       if(SPR<0.24)            {anLc=min(L$Llambda,anLc+Llambda*0.1)}
