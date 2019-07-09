@@ -18,7 +18,7 @@ run_analyses <- function(D, Species, n_iteration, n_GTG, starting, NumCores, See
 
   set.seed(Seed)
 
-  Results <- run_lbspr(INP, Species, n_iteration, n_GTG, starting, NumCores)
+  Results <- run_lbspr(D, Species, n_iteration, n_GTG, starting, NumCores)
 
   Final <- Results[[1]]
 
@@ -58,7 +58,7 @@ run_analyses <- function(D, Species, n_iteration, n_GTG, starting, NumCores, See
   dir.create(outdir)
 
   Results[[1]] <- Final
-  model_fit(Results, outdir)
+  model_fit(Results, D, outdir)
 
 if(ManageLc30==T&ManageF30==T){  # Skip graphics processing if management is turned off to prevent crash
   if(D$Val1[11]!=9999){
