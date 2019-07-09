@@ -78,6 +78,13 @@ run_lbspr <- function(D, Species, n_iteration,n_GTG,starting,NumCores){
   ParDist$Bio.survey <- StepwiseLH::GenerateRandom(n_iter_extra,D[11,]$Dist,D[11,]$Val1,D[11,]$Val2)
   ParDist$Catch      <- StepwiseLH::GenerateRandom(n_iter_extra,D[12,]$Dist,D[12,]$Val1,D[12,]$Val2)
 
+  # Initalize variables for used to in the data.table::subset function to deal with the
+  # "undefined global functions or variables" issue when checking the R Package.
+  Linf <- NULL
+  K <- NULL
+  Lmat95 <- NULL
+  Amax <- NULL
+  Amat <- NULL
   # Remove problematic iterations and re-sample to get iteration count = n_iteration
   FilteredParDist <- subset(ParDist,
                             Linf   >= D[2,]$Min & Linf   <= D[2,]$Max &

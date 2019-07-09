@@ -1,6 +1,20 @@
+#' Run TMB-LBSPR Analysis
+#'
+#' Runs TMB LBSPR model and calls process_results function.
+#'
+#' @param D Input Data
+#' @param Species Species name
+#' @param n_iteration Number of Iterations
+#' @param n_GTG Number of growth-type groups used in simulation (default at 20)
+#' @param starting List of starting values for the 3 estimated parameters
+#' @param NumCores Number of CPU cores to use (Default?)
+#' @param Seed Psuedo-Random Number Seed
+#' @param ManageF30 Option to return max fishing mortality (F30) management recommendation
+#' @param ManageLc30 Option to return minimum size (Lc30) management recommendation.
+#'
 #' @import data.table
 #' @export
-run_analyses <- function(D, Species, n_iteration,n_GTG,starting,ManageF30, ManageLc30, NumCores,Seed){
+run_analyses <- function(D, Species, n_iteration, n_GTG, starting, NumCores, Seed, ManageF30=TRUE, ManageLc30=TRUE){
 
   set.seed(Seed)
 

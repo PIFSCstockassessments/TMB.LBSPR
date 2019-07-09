@@ -1,6 +1,18 @@
-#' @import ggplot2
 
-model_fit <- function(Results,outdir){  # Residual graphs an preliminary results
+#' Model Fit results
+#'
+#' Takes the model residuals from run_analyses and generates diagnostic plots
+#'
+#' @param Results TMB.LBSPR Results
+#' @param outdir Location to store outputs to file. Defaults to TMB.LBSPR directory in the system's Home.
+#'
+#' @import ggplot2
+#' @importFrom grDevices dev.off tiff
+#' @importFrom graphics hist
+#' @importFrom stats IQR dnorm median nlminb quantile rnorm sd
+#' @importFrom utils write.csv
+#'
+model_fit <- function(Results, INP, outdir){  # Residual graphs an preliminary results
 
   Final <- Results[[1]]
 
