@@ -2,8 +2,8 @@
 #' @import TMB
 #' @import StepwiseLH
 #' @import data.table
-
-run_lbspr <- function(D, Species, n_iteration,n_GTG,starting,NumCores){
+#'
+run_lbspr <- function(D, Species, n_iteration, n_GTG, starting, NumCores){
 
   # Specific parameters
   D <- data.table(D)
