@@ -214,7 +214,7 @@ cumul$C30.catch  <- quantile(D$C30.catch, probs=seq(0,0.95,by=0.01))
 cumul$C30.survey <- quantile(D$C30.survey, probs=seq(0,0.95,by=0.01))
 cumul            <- data.frame(cumul)
 
-C30.cdf.graph <- ggplot(data=cumul,aes(y=prob))
+C30.cdf.graph <- ggplot(data=cumul,aes_(y=quote(prob)))
 
 if(TYPE=="Both"){
   C30.cdf.graph <- C30.cdf.graph+geom_line(aes(x=cumul$C30.catch),col="orange",size=0.8,linetype="longdash")+

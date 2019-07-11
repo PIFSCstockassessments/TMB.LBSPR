@@ -63,23 +63,23 @@ model_fit <- function(Results, INP, outdir){  # Residual graphs an preliminary r
                  legend.margin=margin(unit(0,"cm")),
                  legend.position="none" )
 
-  fit.plot   <- ggplot(data=Data)+geom_col(aes(x=Length_obs,y=Count_obs),fill="cadetblue3",col="black")+
-    geom_line(aes(x=Length_obs,y=Expected),col="red",size=1.3)+
+  fit.plot   <- ggplot(data=Data)+geom_col(aes_(x=~Length_obs,y=~Count_obs),fill="cadetblue3",col="black")+
+    geom_line(aes_(x=~Length_obs,y=~Expected),col="red",size=1.3)+
     scale_y_continuous(expand=c(0,0))+
     labs(x="Observed fork length (mm)",y=bquote("Count"))+
     theme_classic()+theme
 
 
-  res.plot <- ggplot(data=Data,aes(x=Length_obs))+geom_point(aes(y=resid.median))+
+  res.plot <- ggplot(data=Data,aes_(x=~Length_obs))+geom_point(aes(y=resid.median))+
     geom_errorbar(aes(ymin=(resid.median-resid.SD),ymax=(resid.median+resid.SD)))+
     labs(x="Observed fork length (mm)",y=bquote("Residual (mm)"))+
     geom_hline(yintercept=0,col="red")+
     theme_classic()+theme
 
-  Fgraph <- ggplot(data=Final,aes(x=Fmort))+geom_histogram()+theme_classic()+scale_x_continuous(limits=c(-1,2))+theme
+  Fgraph <- ggplot(data=Final,aes_(x=~Fmort))+geom_histogram()+theme_classic()+scale_x_continuous(limits=c(-1,2))+theme
 
 
-  Final  <- subset(Final,Fmort>0)
+  Final <- Final[Final$Fmort > 0,]
 
   print(median(Final$Fmort))
   print(median(Final$SPR,na.rm=TRUE))
