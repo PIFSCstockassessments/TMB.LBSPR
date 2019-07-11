@@ -4,6 +4,7 @@
 #' Takes the model residuals from run_analyses and generates diagnostic plots
 #'
 #' @param Results TMB.LBSPR Results
+#' @param INP Input Data
 #' @param outdir Location to store outputs to file. Defaults to TMB.LBSPR directory in the system's Home.
 #'
 #' @import ggplot2

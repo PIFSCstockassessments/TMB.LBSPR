@@ -9,6 +9,8 @@ model_fit(Results, INP, outdir)
 \arguments{
 \item{Results}{TMB.LBSPR Results}
 
+\item{INP}{Input Data}
+
 \item{outdir}{Location to store outputs to file. Defaults to TMB.LBSPR directory in the system's Home.}
 }
 \description{
