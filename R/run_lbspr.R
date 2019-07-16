@@ -2,6 +2,7 @@
 #' @import TMB
 #' @import StepwiseLH
 #' @import data.table
+#' @useDynLib TMB.LBSPR
 
 run_lbspr <- function(D, Species, n_iteration,n_GTG,starting,NumCores){
 
@@ -162,7 +163,7 @@ run_lbspr <- function(D, Species, n_iteration,n_GTG,starting,NumCores){
 
     # Run TMB model
     tryCatch({
-      model <- MakeADFun(data, parameters, DLL="TMB_LBSPR")
+      model <- MakeADFun(data, parameters, DLL="TMB.LBSPR")
       fit   <- nlminb(model$par, model$fn, model$gr)
     }, error = function(e) return ("Error!"))
 
@@ -175,7 +176,7 @@ run_lbspr <- function(D, Species, n_iteration,n_GTG,starting,NumCores){
   cl <- makeCluster(NumCores)
   clusterEvalQ(cl,require(TMB))
   #clusterEvalQ(cl,dyn.load(dynlib("GTG")))
-  clusterEvalQ(cl,dyn.load(dynlib("src/TMB_LBSPR")))
+  #clusterEvalQ(cl,dyn.load(dynlib("TMB.LBSPR")))
 
 
   start<-proc.time()[3]
