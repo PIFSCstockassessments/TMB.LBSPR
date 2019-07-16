@@ -1,4 +1,9 @@
+*.o
+*.dll
+
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+.o
+.dll
