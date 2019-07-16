@@ -24,7 +24,7 @@ run_lbspr <- function(D, Species, n_iteration,n_GTG,starting,NumCores){
 
   # Obtain life history parameters
   if(LH.source=="Stepwise"){
-    ParDist <- Get_distributions(Family, Lmax,Lmax.sd, n_iter_extra)
+    ParDist <- Get_distributions(Family_Input=Family, Lmax.mean=Lmax,Lmax.SD=Lmax.sd,M_method=0.04, n_iter=n_iter_extra)
     ParDist$Lmat50 <- ParDist$Lmat-1
     ParDist$Lmat95 <- ParDist$Lmat
     ParDist$Amat   <- ParDist$A0-1/ParDist$K*log(1-ParDist$Lmat50/ParDist$Linf)
