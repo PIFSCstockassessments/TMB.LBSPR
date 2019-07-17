@@ -173,7 +173,8 @@ run_lbspr <- function(D, Species, n_iteration,n_GTG,starting,NumCores){
 
   # Execute parallel processing
   no_cores <- detectCores()-1
-  cl <- makeCluster(NumCores)
+  if(NumCores<=0)    {cl <- makeCluster(no_cores)} # If the number of core is not manually specified, use total cores-1
+  else if(NumCores>0){cl <- makeCluster(NumCores)}
   clusterEvalQ(cl,require(TMB))
   #clusterEvalQ(cl,dyn.load(dynlib("GTG")))
   #clusterEvalQ(cl,dyn.load(dynlib("TMB.LBSPR")))
