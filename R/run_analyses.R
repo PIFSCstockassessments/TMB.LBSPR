@@ -1,6 +1,6 @@
 #' @import data.table
 #' @export
-run_analyses <- function(D, Species, n_iteration,n_GTG,starting,ManageF30, ManageLc30, NumCores,Seed){
+run_analyses <- function(D, Species, n_iteration,n_GTG,starting,ManageF30, ManageLc30, NumCores=-999,Seed=1){
 
   set.seed(Seed)
 
