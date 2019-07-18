@@ -8,15 +8,15 @@
 #' @param outdir Location to store outputs to file. Defaults to TMB.LBSPR directory in the system's Home.
 #'
 #' @import ggplot2
-#' @import reshape2
-#' @import data.table
 #' @import scales
 #' @import gridExtra
 #' @import grid
 #' @import MASS
 #' @import Hmisc
 #' @import openxlsx
-
+#' @importFrom reshape2 melt dcast
+#' @importFrom data.table data.table
+#'
 process_outputs <- function(D, TYPE=c("Both", "Survey only", "Catch only"), SHOW.LC=TRUE,
                             outdir=file.path(home=Sys.getenv("HOME"), "TMB.LBSPR")){
 

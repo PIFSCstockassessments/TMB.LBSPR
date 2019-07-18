@@ -1,7 +1,7 @@
 #' @import parallel
 #' @import TMB
 #' @import StepwiseLH
-#' @import data.table
+#' @importFrom data.table data.table
 #'
 run_lbspr <- function(D, Species, n_iteration, n_GTG, starting, NumCores){
 

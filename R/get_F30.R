@@ -1,5 +1,5 @@
 #' @import parallel
-#' @import data.table
+#' @importFrom data.table data.table
 
 get_F30 <- function(D,NumCores){
 

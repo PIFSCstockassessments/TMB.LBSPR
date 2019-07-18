@@ -12,6 +12,7 @@
 #' @importFrom graphics hist
 #' @importFrom stats IQR dnorm median nlminb quantile rnorm sd
 #' @importFrom utils write.csv
+#' @importFrom data.table data.table setnames
 #'
 model_fit <- function(Results, INP, outdir){  # Residual graphs an preliminary results
 

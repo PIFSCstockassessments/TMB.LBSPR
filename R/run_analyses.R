@@ -12,7 +12,6 @@
 #' @param ManageF30 Option to return max fishing mortality (F30) management recommendation
 #' @param ManageLc30 Option to return minimum size (Lc30) management recommendation.
 #'
-#' @import data.table
 #' @export
 run_analyses <- function(D, Species, n_iteration, n_GTG, starting, NumCores, Seed, ManageF30=TRUE, ManageLc30=TRUE){
 
