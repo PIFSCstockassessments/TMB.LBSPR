@@ -1,12 +1,27 @@
+#' TMB.LPSBR model output
+#'
+#' Takes the output from run_analyses, a Monte Carlo dataset, and creates tables and graphs
+#'
+#' @param D TMB.LBSPR MCMC dataset
+#' @param TYPE ype of data available ("Survey only", "Catch only", "Both).
+#' @param SHOW.LC Option to show minimum size (Lc) management results
+#' @param outdir Location to store outputs to file. Defaults to TMB.LBSPR directory in the system's Home.
+#'
 #' @import ggplot2
-#' @import reshape2
-#' @import data.table
 #' @import scales
 #' @import gridExtra
 #' @import grid
 #' @import MASS
 #' @import Hmisc
-process_outputs <- function(D, TYPE, SHOW.LC,outdir){
+#' @import openxlsx
+#' @importFrom reshape2 melt dcast
+#' @importFrom data.table data.table
+#'
+process_outputs <- function(D, TYPE=c("Both", "Survey only", "Catch only"), SHOW.LC=TRUE,
+                            outdir=file.path(home=Sys.getenv("HOME"), "TMB.LBSPR")){
+
+
+  TYPE <- match.arg(TYPE)
 
   options(na.rm=TRUE)
   D <- data.frame(D)
@@ -199,7 +214,7 @@ cumul$C30.catch  <- quantile(D$C30.catch, probs=seq(0,0.95,by=0.01))
 cumul$C30.survey <- quantile(D$C30.survey, probs=seq(0,0.95,by=0.01))
 cumul            <- data.frame(cumul)
 
-C30.cdf.graph <- ggplot(data=cumul,aes(y=prob))
+C30.cdf.graph <- ggplot(data=cumul,aes_(y=quote(prob)))
 
 if(TYPE=="Both"){
   C30.cdf.graph <- C30.cdf.graph+geom_line(aes(x=cumul$C30.catch),col="orange",size=0.8,linetype="longdash")+

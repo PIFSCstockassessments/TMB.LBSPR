@@ -1,10 +1,24 @@
-#' @import data.table
+#' Run TMB-LBSPR Analysis
+#'
+#' Runs TMB LBSPR model and calls process_results function.
+#'
+#' @param D Input Data
+#' @param Species Species name
+#' @param n_iteration Number of Iterations
+#' @param n_GTG Number of growth-type groups used in simulation (default at 20)
+#' @param starting List of starting values for the 3 estimated parameters
+#' @param NumCores Number of CPU cores to use (Default?)
+#' @param Seed Psuedo-Random Number Seed
+#' @param ManageF30 Option to return max fishing mortality (F30) management recommendation
+#' @param ManageLc30 Option to return minimum size (Lc30) management recommendation.
+#'
 #' @export
-run_analyses <- function(D, Species, n_iteration,n_GTG,starting,ManageF30, ManageLc30, NumCores=-999,Seed=1){
+
+run_analyses <- function(D, Species, n_iteration,n_GTG,starting,ManageF30=TRUE, ManageLc30=TRUE, NumCores=-999,Seed=1){
 
   set.seed(Seed)
 
-  Results <- run_lbspr(INP, Species, n_iteration, n_GTG, starting, NumCores)
+  Results <- run_lbspr(D, Species, n_iteration, n_GTG, starting, NumCores)
 
   Final <- Results[[1]]
 
@@ -44,7 +58,7 @@ run_analyses <- function(D, Species, n_iteration,n_GTG,starting,ManageF30, Manag
   dir.create(outdir)
 
   Results[[1]] <- Final
-  model_fit(Results, outdir)
+  model_fit(Results, D, outdir)
 
 if(ManageLc30==T&ManageF30==T){  # Skip graphics processing if management is turned off to prevent crash
   if(D$Val1[11]!=9999){

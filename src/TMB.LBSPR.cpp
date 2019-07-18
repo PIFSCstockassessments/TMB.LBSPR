@@ -3,14 +3,16 @@
 template<class Type>
 Type objective_function<Type>::operator() ()
 {
- 
+
   // ========================Inputs==================================
   
+
   // Data in likelihood
   DATA_VECTOR(length_obs);
   DATA_VECTOR(count_obs);
   DATA_VECTOR(GTG_vec);
   DATA_VECTOR(R0_vec);
+
  
   // Known values
   DATA_SCALAR(M);
@@ -28,16 +30,17 @@ Type objective_function<Type>::operator() ()
   //PARAMETER(logF);
   //PARAMETER(logLS50);
   //PARAMETER(logLS95);
+
   
   PARAMETER(Fmort);
   PARAMETER(LS50);
   PARAMETER(LS95);
 
-
   // ====================Transform parameters========================
   //Type F = exp(logF);
   //Type LS50 = exp(logLS50);
   //Type LS95 = exp(logLS95);
+
     
   // ====================Dynamics=====================================
   Type n_obs=0;
@@ -81,12 +84,15 @@ Type objective_function<Type>::operator() ()
    // Populate M vector
   for(int i=0;i<n_l;i++){
     M_vec(i)=M;
+
   }  
 
   // Populate F vector
   for(int i=0;i<n_l;i++){
     F_vec(i)=Fmort*Sel_vec(i);
+
   }  
+
 
   // Populate Z vector
   for(int i=0;i<n_l;i++){
@@ -104,7 +110,8 @@ for(int GTG=0;GTG<n_GTG;GTG++){
   for(int i=1;i<n_l;i++){
     NL_vec(i)=NL_vec(i-1)*pow((aLinf-L_vec(i)-1)/(aLinf-L_vec(i)),(Z_vec(i)/K));
     if(L_vec(i)>=(aLinf-1)){NL_vec(i)=0;}
-  } 
+ } 
+
 
   // Populate pristine Number at length vector
   NL_prist_vec(0)=R0_vec(GTG)*pow((aLinf-L_vec(0)-1)/(aLinf-L_vec(0)),(M_vec(0)/K));
@@ -162,8 +169,9 @@ for(int i=0;i<n_l;i++){
   Type ColSum=0;
   for(int i=0;i<n_l;i++){
       ColSum=ColSum+DL_final(i);
-   } 
+  } 
   
+
   for(int i=0;i<n_l;i++){
    DLS_final(i)=DL_final(i)/ColSum;
    }
