@@ -13,7 +13,8 @@
 #' @param ManageLc30 Option to return minimum size (Lc30) management recommendation.
 #'
 #' @export
-run_analyses <- function(D, Species, n_iteration, n_GTG, starting, NumCores, Seed, ManageF30=TRUE, ManageLc30=TRUE){
+
+run_analyses <- function(D, Species, n_iteration,n_GTG,starting,ManageF30=TRUE, ManageLc30=TRUE, NumCores=-999,Seed=1){
 
   set.seed(Seed)
 
