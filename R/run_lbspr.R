@@ -25,7 +25,7 @@ run_lbspr <- function(D, Species, n_iteration, n_GTG, starting, NumCores){
 
   # Obtain life history parameters
   if(LH.source=="Stepwise"){
-    ParDist <- StepwiseLH::Get_distributions(Family, Lmax,Lmax.sd, n_iter_extra)
+    ParDist <- Get_distributions(Family_Input=Family, Lmax.mean=Lmax,Lmax.SD=Lmax.sd,M_method=0.04, n_iter=n_iter_extra)
     ParDist$Lmat50 <- ParDist$Lmat-1
     ParDist$Lmat95 <- ParDist$Lmat
     ParDist$Amat   <- ParDist$A0-1/ParDist$K*log(1-ParDist$Lmat50/ParDist$Linf)
@@ -171,7 +171,7 @@ run_lbspr <- function(D, Species, n_iteration, n_GTG, starting, NumCores){
 
     # Run TMB model
     tryCatch({
-      model <- MakeADFun(data, parameters, DLL="TMB_LBSPR")
+      model <- MakeADFun(data, parameters, DLL="TMB.LBSPR")
       fit   <- nlminb(model$par, model$fn, model$gr)
     }, error = function(e) return ("Error!"))
 
@@ -181,10 +181,11 @@ run_lbspr <- function(D, Species, n_iteration, n_GTG, starting, NumCores){
 
   # Execute parallel processing
   no_cores <- detectCores()-1
-  cl <- makeCluster(NumCores)
+  if(NumCores<=0)    {cl <- makeCluster(no_cores)} # If the number of core is not manually specified, use total cores-1
+  else if(NumCores>0){cl <- makeCluster(NumCores)}
   clusterEvalQ(cl,require(TMB))
   #clusterEvalQ(cl,dyn.load(dynlib("GTG")))
-  clusterEvalQ(cl,dyn.load(dynlib("src/TMB_LBSPR")))
+  #clusterEvalQ(cl,dyn.load(dynlib("TMB.LBSPR")))
 
 
   start<-proc.time()[3]

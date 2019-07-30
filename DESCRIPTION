@@ -5,7 +5,8 @@ Authors@R: person("First", "Last", email = "first.last@example.com", role = c("a
 Description: What the package does (one paragraph).
 Depends: 
   R (>= 3.3),
-  TMB,
+  TMB, 
+  RcppEigen
 License: file LICENSE
 Imports:
   data.table,
@@ -25,3 +26,4 @@ LinkingTo:
   TMB,
   RcppEigen
 Remotes: PIFSCstockassessments/StepwiseLH@v1.1, kaskr/TMB_contrib_R/TMBhelper
+
