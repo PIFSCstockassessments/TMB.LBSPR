@@ -1,4 +1,4 @@
-#define TMB_LIB_INT R_init_TMB_LBSPR
+#define TMB_LIB_INIT R_init_TMB_LBSPR
 #include <TMB.hpp>
 
 template<class Type>
@@ -215,5 +215,6 @@ Type SPR = SSB/SSB0;
 
   return(nll);
 }
+
 
 

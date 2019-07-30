@@ -2,6 +2,8 @@
 #' @import TMB
 #' @import StepwiseLH
 #' @importFrom data.table data.table
+#' @importFrom TMB MakeADFun sdreport
+#' @importFrom TMBhelper Optimize
 #'
 run_lbspr <- function(D, Species, n_iteration, n_GTG, starting, NumCores){
 
