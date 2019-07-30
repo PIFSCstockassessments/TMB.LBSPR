@@ -1,9 +1,9 @@
 #' @import parallel
 #' @import TMB
-#' @import StepwiseLH
 #' @importFrom data.table data.table
 #' @importFrom TMB MakeADFun sdreport
 #' @importFrom TMBhelper Optimize
+#' @importFrom StepwiseLH GenerateRandom Get_distributions
 #'
 run_lbspr <- function(D, Species, n_iteration, n_GTG, starting, NumCores){
 
@@ -25,7 +25,7 @@ run_lbspr <- function(D, Species, n_iteration, n_GTG, starting, NumCores){
 
   # Obtain life history parameters
   if(LH.source=="Stepwise"){
-    ParDist <- Get_distributions(Family, Lmax,Lmax.sd, n_iter_extra)
+    ParDist <- StepwiseLH::Get_distributions(Family, Lmax,Lmax.sd, n_iter_extra)
     ParDist$Lmat50 <- ParDist$Lmat-1
     ParDist$Lmat95 <- ParDist$Lmat
     ParDist$Amat   <- ParDist$A0-1/ParDist$K*log(1-ParDist$Lmat50/ParDist$Linf)
