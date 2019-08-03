@@ -166,7 +166,7 @@ for(i in 1:16){
 
   variable <- colnames(D)[i]
   aGraph <- ggplot(data=D,aes_string(x=variable))+geom_histogram(binwidth=bw,col="cadetblue3",fill="cadetblue3",lwd=0.2)+
-    scale_x_continuous(name=Titles[[i]],labels=comma)+
+    scale_x_continuous(name=Titles[[i]])+
     coord_cartesian(xlim=c(as.numeric(Min[i]),as.numeric(Max[i])))+
     scale_y_continuous(expand=c(0,0))+
     geom_vline(xintercept=aMedian,col="red",linetype="dashed",size=1)+
