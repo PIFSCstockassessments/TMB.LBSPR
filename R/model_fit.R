@@ -77,8 +77,8 @@ model_fit <- function(Results, INP, outdir){  # Residual graphs an preliminary r
     geom_hline(yintercept=0,col="red")+
     theme_classic()+theme
 
-  Fgraph <- ggplot(data=Final,aes_(x=~Fmort))+geom_histogram()+theme_classic()+scale_x_continuous(limits=c(-1,2))+theme
-
+  #Fgraph <- ggplot(data=Final,aes_(x=~Fmort))+geom_histogram()+theme_classic()+scale_x_continuous(limits=c(-1,2))+theme
+  Fgraph <- ggplot(data=Final,aes_(x=~Fmort))+geom_histogram()+theme_classic()+theme
 
   Final <- Final[Final$Fmort > 0,]
 
