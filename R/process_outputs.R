@@ -18,7 +18,7 @@
 #' @importFrom data.table data.table
 #'
 process_outputs <- function(D, TYPE=c("Both", "Survey only", "Catch only"), SHOW.LC=TRUE,
-                            outdir=file.path(home=Sys.getenv("HOME"), "TMB.LBSPR")){
+                            outdir=file.path(home=Sys.getenv("R_USER"), "TMB.LBSPR")){
 
 
   TYPE <- match.arg(TYPE)
