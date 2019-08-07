@@ -33,9 +33,9 @@ Results   <- run_analyses(INP,aSpecies,
                       Seed=1)
 ```
 
-# Output
+## Output
 
-By default, ouptut from `run_analyses` will be written to `TMB.LBSPR` directory, located in the users HOME directory. 
+By default, ouptut from `run_analyses` will be written to `TMB.LBSPR` subdirectory of the the users HOME directory. 
 
 For Windows users, the HOME directory is typically located at `C:/users/[USERNAME]`. Where `[USERNAME]` is the system's user account name.
 
