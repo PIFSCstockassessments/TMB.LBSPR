@@ -18,10 +18,19 @@
 #' @importFrom data.table data.table
 #'
 process_outputs <- function(D, TYPE=c("Both", "Survey only", "Catch only"), SHOW.LC=TRUE,
-                            outdir=file.path(home=Sys.getenv("HOME"), "TMB.LBSPR")){
+                            outdir=file.path(home=Sys.getenv("R_USER"), "TMB.LBSPR")){
 
 
   TYPE <- match.arg(TYPE)
+
+  #create input/pre-run subdirectory of any output needed in the setup stage
+  if(!dir.exists(file.path(outdir))){
+    if(dir.exists(Sys.getenv("R_USER"))){
+      dir.create(file.path(outdir))
+    }else{
+      stop("System home directory (R_USER) not found.")
+    }
+  }
 
   options(na.rm=TRUE)
   D <- data.frame(D)

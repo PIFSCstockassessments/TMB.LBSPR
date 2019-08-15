@@ -5,7 +5,7 @@
 \title{TMB.LPSBR model output}
 \usage{
 process_outputs(D, TYPE = c("Both", "Survey only", "Catch only"),
-  SHOW.LC = TRUE, outdir = file.path(home = Sys.getenv("HOME"),
+  SHOW.LC = TRUE, outdir = file.path(home = Sys.getenv("R_USER"),
   "TMB.LBSPR"))
 }
 \arguments{
