@@ -106,15 +106,18 @@ run_lbspr <- function(D, Species, n_iteration, n_GTG, starting, NumCores){
   ParDist        <- ParDist[,c("Lmax","Linf","CVLinf","K","A0","beta","Lmat50","Lmat95","Amat","Amax","M","Bio.survey","Catch")]
 
   # Calculate the size of the length bins used for the observed size structure
-  bin_diff <- vector(length=length(D$Length_obs)-1)
-  for(i in 2:length(D$Length_obs)){  bin_diff[i] <- D$Length_obs[i]-D$Length_obs[i-1]   }
+  LD <- D[,10:ncol(INP)]
+  LD <- LD[!is.na(Length_obs)]
+
+  bin_diff <- vector(length=length(LD$Length_obs)-1)
+  for(i in 2:length(LD$Length_obs)){  bin_diff[i] <- LD$Length_obs[i]-LD$Length_obs[i-1]   }
   counts <- table(bin_diff)
   bin_size <- as.numeric(names(counts)[which.max(counts)])
 
   # Fill missing zeroe counts in observed length data
-  Length_obs_full <-   D[,10:length(D)]
-  currentbin <- min(D$Length_obs)
-  numbin <- (max(D$Length_obs)-min(D$Length_obs))/bin_size
+  Length_obs_full <-   LD
+  currentbin <- min(LD$Length_obs)
+  numbin <- (max(LD$Length_obs)-min(LD$Length_obs))/bin_size
   for(i in 1:(numbin)){
 
     if(Length_obs_full[i,1]==currentbin){currentbin <- currentbin+bin_size; next} # Skip
