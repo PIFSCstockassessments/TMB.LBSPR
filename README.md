@@ -19,7 +19,7 @@ INP      <- Example
 aSpecies <- "TestSpecies"
 ```
 
-To Run the model, 
+To Run the model: 
 
 ```
 # Run model
@@ -32,6 +32,13 @@ Results   <- run_analyses(INP,aSpecies,
                       NumCores=7,
                       Seed=1)
 ```
+
+## Output
+
+By default, ouptut from `run_analyses` will be written to `TMB.LBSPR` subdirectory of the the users HOME directory. 
+
+For Windows users, the HOME directory is typically located at `C:/users/[USERNAME]`. Where `[USERNAME]` is the system's user account name.
+
 
 ## Github Disclaimer
 

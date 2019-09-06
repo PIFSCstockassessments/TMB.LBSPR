@@ -1,8 +1,9 @@
 #' @import parallel
 #' @import TMB
-#' @import StepwiseLH
 #' @importFrom data.table data.table
-#' @useDynLib TMB.LBSPR
+#' @importFrom TMB MakeADFun sdreport
+#' @importFrom TMBhelper Optimize
+#' @importFrom StepwiseLH GenerateRandom Get_distributions
 #'
 run_lbspr <- function(D, Species, n_iteration, n_GTG, starting, NumCores){
 

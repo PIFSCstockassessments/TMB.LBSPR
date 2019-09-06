@@ -4,8 +4,8 @@
 \alias{run_analyses}
 \title{Run TMB-LBSPR Analysis}
 \usage{
-run_analyses(D, Species, n_iteration, n_GTG, starting, NumCores, Seed,
-  ManageF30 = TRUE, ManageLc30 = TRUE)
+run_analyses(D, Species, n_iteration, n_GTG, starting, ManageF30 = TRUE,
+  ManageLc30 = TRUE, NumCores = -999, Seed = 1)
 }
 \arguments{
 \item{D}{Input Data}
@@ -18,13 +18,13 @@ run_analyses(D, Species, n_iteration, n_GTG, starting, NumCores, Seed,
 
 \item{starting}{List of starting values for the 3 estimated parameters}
 
-\item{NumCores}{Number of CPU cores to use (Default?)}
-
-\item{Seed}{Psuedo-Random Number Seed}
-
 \item{ManageF30}{Option to return max fishing mortality (F30) management recommendation}
 
 \item{ManageLc30}{Option to return minimum size (Lc30) management recommendation.}
+
+\item{NumCores}{Number of CPU cores to use (Default?)}
+
+\item{Seed}{Psuedo-Random Number Seed}
 }
 \description{
 Runs TMB LBSPR model and calls process_results function.

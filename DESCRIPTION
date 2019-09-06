@@ -5,8 +5,7 @@ Authors@R: person("First", "Last", email = "first.last@example.com", role = c("a
 Description: What the package does (one paragraph).
 Depends: 
   R (>= 3.3),
-  TMB, 
-  RcppEigen
+  TMB,
 License: file LICENSE
 Imports:
   data.table,
@@ -15,9 +14,9 @@ Imports:
   ggplot2,
   scales,
   Hmisc,
-  TMB,
   StepwiseLH,
   openxlsx,
+  TMBhelper,
   MASS
 Encoding: UTF-8
 LazyData: true
@@ -25,4 +24,5 @@ RoxygenNote: 6.1.1
 LinkingTo:
   TMB,
   RcppEigen
-Remotes: PIFSCstockassessments/StepwiseLH
+Remotes: PIFSCstockassessments/StepwiseLH@v1.1, kaskr/TMB_contrib_R/TMBhelper
+
