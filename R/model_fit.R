@@ -22,11 +22,13 @@ model_fit <- function(Results, INP, outdir){  # Residual graphs an preliminary r
   Length_bins <- Results[[2]]
   Prop_obs    <- Results[[3]]
   Prop_exp    <- Results[[4]]
+  Prop_exp[Prop_exp>=0.2] <- 0
 
   #Exp_prop <- Exp_prop[rowSums(Exp_prop)<=1&rowSums(Exp_prop)>0.95,] # Removes anomalous outputs
   #Exp_prop[Exp_prop>0.5] <- NA # Removes anomalous outputs
 
-  List     <- Final$Fmort>0&(rowSums(Prop_exp)<=1&rowSums(Prop_exp)>0.95) #Make a list of runs resulting in negative F (for filter) and remove anomalous outputs
+  #List     <- Final$Fmort>0&(rowSums(Prop_exp)<=1&rowSums(Prop_exp)>0.95) #Make a list of runs resulting in negative F (for filter) and remove anomalous outputs
+  List      <- Final$Fmort>0&rowSums(Prop_exp)>0.9
 
   TotalCount <- INP[,11:length(INP)]
   TotalCount <- TotalCount[!is.na(Count_obs1)]
