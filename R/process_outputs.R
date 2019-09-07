@@ -47,7 +47,7 @@ D <- D[D$Fmort>0.005,]
 
 #if(TYPE!="Survey only"){D <- D[C30_Catch>0]}
 #if(TYPE!="Catch only") {D <- D[C30_Survey>0]}
-D[D$Lc30<=50|D$Lc30==-9999,]$Lc30 <- NA
+D$Lc30[D$Lc30<=50|D$Lc30==-9999] <- NA
 #D <- data.frame(D); D <- data.table(D)
 #D[D$Lc30==-9999,]$Lc30 <- NA
 #D <- data.frame(D)
@@ -354,7 +354,7 @@ saveWorkbook(wb,filename,overwrite=T)
 
 
 #=====SUMMARY TABLE FOR REPORT===========================
-D[is.na(D$Lc30),]$Lc30 <- 0
+D$Lc30[is.na(D$Lc30)] <- 0
 MEDIAN  <- prettyNum(signif(sapply(D,median,na.rm=T),3))
 SD      <- prettyNum(signif(sapply(D,sd,na.rm=T),3))
 Summary <- cbind(MEDIAN,SD)
