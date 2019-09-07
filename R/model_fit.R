@@ -29,6 +29,7 @@ model_fit <- function(Results, INP, outdir){  # Residual graphs an preliminary r
   List     <- Final$Fmort>0&(rowSums(Prop_exp)<=1&rowSums(Prop_exp)>0.95) #Make a list of runs resulting in negative F (for filter) and remove anomalous outputs
 
   TotalCount <- INP[,11:length(INP)]
+  TotalCount <- TotalCount[!is.na(Count_obs1)]
   TotalCount <- t(TotalCount)
   TotalCount <- apply(TotalCount,2,FUN=median,na.rm=TRUE)
   TotalCount <- sum(TotalCount)
@@ -82,12 +83,12 @@ model_fit <- function(Results, INP, outdir){  # Residual graphs an preliminary r
 
   Final <- Final[Final$Fmort > 0,]
 
-  print(median(Final$Fmort))
-  print(median(Final$SPR,na.rm=TRUE))
-  print(median(Final$LS50))
-  print(median(Final$LS95))
-  print(median(Final$Bio.catch))
-  print(median(Final$Bio.survey))
+  print(paste("Fmort:       ",median(Final$Fmort)))
+  print(paste("SPR:         ",median(Final$SPR,na.rm=TRUE)))
+  print(paste("LS50:        ",median(Final$LS50)))
+  print(paste("LS95:        ",median(Final$LS95)))
+  print(paste("Bio. catch:  ",median(Final$Bio.catch)))
+  print(paste("Bio. survey: ",median(Final$Bio.survey)))
 
 
   filename <- paste0("FIT",".tiff")
