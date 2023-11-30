@@ -25,14 +25,14 @@ run_lbspr <- function(D, Species, n_iteration, n_GTG, starting, NumCores){
 
   # Obtain life history parameters
   if(LH.source=="Stepwise"){
-    ParDist <- Get_distributions(Family_Input=Family, Lmax.mean=Lmax,Lmax.SD=Lmax.sd,M_method=0.04, n_iter=n_iter_extra)
+    ParDist        <- Get_distributions(Family_Input=Family, Lmax.mean=Lmax,Lmax.SD=Lmax.sd, n_iter=n_iter_extra,M_method="Hamel_and_Cope_2022")
     ParDist$Lmat50 <- ParDist$Lmat-1
     ParDist$Lmat95 <- ParDist$Lmat
     ParDist$Amat   <- ParDist$A0-1/ParDist$K*log(1-ParDist$Lmat50/ParDist$Linf)
 
     # Calculate M obtained using S=0.05 to S=0.04
-    M_004     <- -log(0.04)/ParDist$Amax
-    ParDist$M <- M_004
+    #M_004     <- -log(0.04)/ParDist$Amax
+    #ParDist$M <- M_004
   }
 
   if(LH.source=="Study"){
@@ -60,12 +60,12 @@ run_lbspr <- function(D, Species, n_iteration, n_GTG, starting, NumCores){
 
     if(!is.na(D[8,]$Val1)){
       ParDist$M    <- StepwiseLH::GenerateRandom(n_iter_extra,D[8,]$Dist,D[8,]$Val1,D[8,]$Val2)
-      ParDist$Amax <- -log(0.04)/ParDist$M
+      ParDist$Amax <- 5.4/ParDist$M
     }
 
     if(is.na(D[8,]$Val1)){
       ParDist$Amax <- StepwiseLH::GenerateRandom(n_iter_extra,D[9,]$Dist,D[9,]$Val1,D[9,]$Val2)
-      ParDist$M    <- -log(0.04)/ParDist$Amax
+      ParDist$M    <- 5.4/ParDist$Amax
     }
 
 
@@ -89,7 +89,7 @@ run_lbspr <- function(D, Species, n_iteration, n_GTG, starting, NumCores){
   Amat <- NULL
   # Remove problematic iterations and re-sample to get iteration count = n_iteration
   FilteredParDist <- subset(ParDist,
-                            Linf   >= D[2,]$Min & Linf   <= D[2,]$Max &
+                              Linf   >= D[2,]$Min & Linf   <= D[2,]$Max &
                               K      >= D[4,]$Min & K      <= D[4,]$Max &
                               Lmat95 >= D[7,]$Min & Lmat95 <= D[7,]$Max &
                               Amax   >= D[9,]$Min & Amax   <= D[9,]$Max &
